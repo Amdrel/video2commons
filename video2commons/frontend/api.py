@@ -397,23 +397,28 @@ def validate_url():
 def get_backend_keys(format):
     """Get the youtube-dl download format key."""
 
+    # We attempt to limit the size of the video to 5 GB if there are files
+    # available that are under that threshold. Otherwise, fallback to the best
+    # available format.
     MAXSIZE = 5 << 30
+
     COMBINED_FMT = (
-        'bestvideo[filesize<{max}]+'
-        'bestaudio[acodec={{acodec}}]/'
-        'bestvideo[filesize<{max}]+'
-        'bestaudio[ext={{aext}}]/'
-        'bestvideo+bestaudio/best'
+        'bestvideo[filesize<{max}]+bestaudio/'
+        'bestvideo+bestaudio/'
+        'best'
     ).format(max=MAXSIZE)
+
     VIDEO_FMT = (
         'bestvideo[filesize<{max}]/'
-        'bestvideo/best'
+        'bestvideo/'
+        'best'
     ).format(max=MAXSIZE)
+
     AUDIO_FMT = (
-        'bestaudio[acodec={{acodec}}]/'
-        'bestaudio[ext={{aext}}]/'
-        'bestaudio/best'
+        'bestaudio/'
+        'best'
     ).format(max=MAXSIZE)
+
     return {
         'ogv (Theora)':
             (VIDEO_FMT.format(vcodec='theora', vext='ogv'), 'an.ogv'),
