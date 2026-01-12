@@ -34,7 +34,7 @@ jobs:
           rm -f video2commons/frontend/static/uploads
 
       - name: Build
-        run: npx gulp
+        run: npx gulp build
 
       - name: Check for unstaged changes
         run: |
