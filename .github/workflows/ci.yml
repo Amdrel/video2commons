@@ -28,14 +28,19 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
+      - name: Remove broken symlinks
+        run: |
+          rm -f video2commons/frontend/static/ssu
+          rm -f video2commons/frontend/static/uploads
+
       - name: Build
         run: npx gulp
 
       - name: Check for unstaged changes
         run: |
-          git diff --exit-code || {
+          git diff --exit-code -- '*.min.js' '*.min.html' || {
             echo "Error: Built files do not match committed files."
             echo "Please run 'npx gulp' locally and commit the changes."
-            git diff --stat
+            git diff --stat -- '*.min.js' '*.min.html'
             exit 1
           }
