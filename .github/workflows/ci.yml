@@ -54,8 +54,9 @@ jobs:
         if: env.NEEDS_COMMIT == 'true'
         run: |
           git checkout -B $GITHUB_HEAD_REF
+          git checkout HEAD -- video2commons/frontend/static/ssu video2commons/frontend/static/uploads
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add video2commons/frontend/static/*.min.js video2commons/frontend/templates/*.min.html
           git commit -m "Update built files from CI"
-          git push origin $GITHUB_HEAD_REF
+          git push --force-with-lease origin $GITHUB_HEAD_REF
