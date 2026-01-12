@@ -36,6 +36,14 @@ jobs:
       - name: Build
         run: npx gulp build
 
+      - name: Debug git
+        run: |
+          pwd
+          ls -la
+          ls -la .git || echo "No .git directory"
+          id
+          stat .git || true
+
       - name: Check for unstaged changes
         run: |
           git diff --exit-code -- video2commons/frontend/static/*.min.js video2commons/frontend/templates/*.min.html || {
