@@ -1,4 +1,4 @@
-name: Validate JavaScript Build
+name: Validate JavaScript Build (no change test)
 
 on:
   pull_request:
