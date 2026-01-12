@@ -1,0 +1,41 @@
+name: Validate JavaScript Build
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:bookworm
+
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y git curl
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build
+        run: npx gulp
+
+      - name: Check for unstaged changes
+        run: |
+          git diff --exit-code || {
+            echo "Error: Built files do not match committed files."
+            echo "Please run 'npx gulp' locally and commit the changes."
+            git diff --stat
+            exit 1
+          }
