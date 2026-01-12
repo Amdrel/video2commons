@@ -19,6 +19,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Configure git safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -35,14 +38,6 @@ jobs:
 
       - name: Build
         run: npx gulp build
-
-      - name: Debug git
-        run: |
-          pwd
-          ls -la
-          ls -la .git || echo "No .git directory"
-          id
-          stat .git || true
 
       - name: Check for unstaged changes
         run: |
