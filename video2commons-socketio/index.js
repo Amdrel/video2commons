@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
 	cors: {
-		origin: `https:${config.webfrontend_uri}`,
+		origin: [`https:${config.webfrontend_uri}`, "https://video2commons-test.toolforge.org"],
 		methods: ["GET", "POST"],
 		credentials: true,
 	},
