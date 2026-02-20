@@ -5,7 +5,8 @@
     "node": "22.x"
   },
   "scripts": {
-    "build": "gulp build",
+    "build": "./utils/build-frontend.sh",
+    "build:gulp": "gulp build",
     "start": "npm install && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
