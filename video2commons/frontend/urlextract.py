@@ -22,6 +22,7 @@
 from collections import OrderedDict
 from video2commons.backend.encode.transcode import WebVideoTranscode
 
+import os
 import json
 import re
 import subprocess
@@ -175,10 +176,19 @@ def do_extract_url(url):
         "cachedir": "/tmp/",
         "noplaylist": False,
     }
+
+    # Use Deno for JavaScript runtime if it is available. It's not in the PATH
+    # when running in the buildpack, so we need to specify it explicitly.
+    #
+    # See: https://github.com/yt-dlp/yt-dlp/issues/14861#issuecomment-3476633520
+    if os.path.exists("/workspace/node_modules/deno/deno"):
+        params["js_runtimes"] = "deno:/workspace/node_modules/deno/deno"
+
     if ".youtube.com/" in url:
         # https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies
         # https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp
         params = add_youtube_params(params)
+
     with yt_dlp.YoutubeDL(params) as dl:
         info = dl.extract_info(url, download=False)
 
