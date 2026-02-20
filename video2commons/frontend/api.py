@@ -45,6 +45,7 @@ from video2commons.frontend.urlextract import (
     make_dummy_desc,
     do_validate_filename,
     do_validate_filedesc,
+    predict_task_type_ffprobe,
     sanitize,
     DEFAULT_QUEUE,
     HEAVY_QUEUE,
@@ -451,12 +452,8 @@ def run_task():
             if not FILEKEY_REGEX.match(filekey):
                 return jsonify(error="Invalid file key format"), 400
 
-            # Hotfix: Temporarily default to DEFAULT_QUEUE until the ffprobe
-            # issue is properly fixed.
-            queue = DEFAULT_QUEUE
-
-            # filepath = os.path.join(UPLOADS_DIR, filekey)
-            # queue = predict_task_type_ffprobe(filepath)
+            filepath = os.path.join(UPLOADS_DIR, filekey)
+            queue = predict_task_type_ffprobe(filepath)
         else:
             queue = DEFAULT_QUEUE
 
