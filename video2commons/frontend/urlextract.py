@@ -182,7 +182,7 @@ def do_extract_url(url):
     #
     # See: https://github.com/yt-dlp/yt-dlp/issues/14861#issuecomment-3476633520
     if os.path.exists("/workspace/node_modules/deno/deno"):
-        params["js_runtimes"] = "deno:/workspace/node_modules/deno/deno"
+        params["js_runtimes"] = {"deno": {"path": "/workspace/node_modules/deno/deno"}}
 
     if ".youtube.com/" in url:
         # https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies
